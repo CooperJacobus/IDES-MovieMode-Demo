@@ -1,20 +1,22 @@
-        import random
-        manualMode = True # exposure mode: true for manual, false for random
-        fade = False # phosphorus fade: reduces grid values over time if true
-        go = False # toggels exposures, controled by ENTER
+import random
 
-        dimension = 4 # dimension of grid
-        maxExposure = 256 # maximum exposures
-        totalExposure = 0 # counter for exposures
-        int[][] grid = new int[dimension][dimension] # 2D array of int values representing total exposure of each panel
-        rowIndex = 0 # row index of currently exposed panel
-        colIndex = 0 # column index of currently exposed panel
-        eTime = 0 # countdown of remaining exposure;
-        exposureTime = 0 # represenents how long panel is to be exposed for
+class Demo():
+        manualMode = True  # exposure mode: true for manual, false for random
+        fade = False  # phosphorus fade: reduces grid values over time if true
+        go = False  # toggels exposures, controlled by ENTER
+
+        dimension = 4  # type: int # dimension of grid
+        maxExposure = 256  # maximum exposures
+        totalExposure = 0  # counter for exposures
+        grid = [[0 for x in range(dimension)] for y in range(dimension)]  # 2D array of int values representing total exposure of each panel
+        rowIndex = 0  # row index of currently exposed panel
+        colIndex = 0  # column index of currently exposed panel
+        eTime = 0  # countdown of remaining exposure;
+        exposureTime = 0  # represenents how long panel is to be exposed for
 
 # Manual Mode
         if manualMode:
-            if go == False:
+            # if go == False:
                 # control variables with keys
 
             if go:
@@ -35,7 +37,7 @@
                 # wait 100 miliseconds
 
         # Random Mode
-        if manualMode == False && go == True:
+        if manualMode == False & go == True:
             if totalExposure < maxExposure:
                 if eTime <= 0:
                     # randomly generate panel index and exposure time
@@ -50,10 +52,7 @@
                         grid[rowIndex][colIndex] += 1 # add to grid value
                         totalExposure += 1 # add to counter
                         eTime -= 1 # subtract from remaining exposure time
-                    # wait 50 miliseconds
-
-
-
+                    # wait 50 milliseconds
 
         # reduce values in grid over time
         if fade:
