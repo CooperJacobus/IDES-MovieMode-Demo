@@ -1,0 +1,71 @@
+class Demo {
+    public static void main(String[] args) {
+
+        boolean manualMode = true; //exposure mode: true for manual, false for random
+        boolean fade = false; //phosphorus fade: reduces grid values over time if true
+        boolean go = false; //toggels exposures, controled by ENTER
+
+        int dimension = 4; //dimension of grid
+        int maxExposure = 256; //maximum exposures
+        int totalExposure = 0; //counter for exposures
+        int[][] grid = new int[dimension][dimension]; //2D array of int values representing total exposure of each panel
+        int rowIndex = 0; //row index of currently exposed panel
+        int colIndex = 0; //column index of currently exposed panel
+        int eTime = 0; //countdown of remaining exposure;
+        int exposureTime = 0; //represenents how long panel is to be exposed for
+
+//Manual Mode
+        if(manualMode == true){
+
+            if(go == false){
+                //control variables with keys
+            }
+
+            if(go == true){
+                //expose panel
+                if(fade == true) grid[rowIndex][colIndex]+=5; //increase values for legibility if fade is on
+                else grid[rowIndex][colIndex]++; //add to grid value
+                totalExposure++; //add to counter
+                eTime--; //subtract from remaining exposure time
+                //wait 50 miliseconds for legibility
+
+                //draw step in Piano Roll
+                }
+
+            //stop run when time expires
+            if(eTime <= 0){
+                go = false;
+                //wait 100 miliseconds
+            }
+
+        }
+
+        //Random Mode
+        if(manualMode == false && go == true) {
+            if (totalExposure < maxExposure) {
+                if (eTime <= 0) {
+                    //randomly generate panel index and exposure time
+                    rowIndex = (int) (Math.random() * dimension);
+                    colIndex = (int) (Math.random() * dimension);
+                    eTime = (int) (Math.random() * 6) + 2;
+                    exposureTime = eTime;
+                } else {
+                    if (fade == true) grid[rowIndex][colIndex] += 5; //adjust for fade for legibility
+                    else grid[rowIndex][colIndex]++; //add to grid value
+                    totalExposure++; //add to counter
+                    eTime--; //subtract from remaining exposure time
+                    //wait 50 miliseconds
+                }
+            }
+        }
+
+        //reduce values in grid over time
+        if(fade == true){
+            for(int row = 0; row < grid.length; row++){
+                for(int col = 0; col < grid[row].length; col++){
+                    if(grid[row][col] > 0) grid[row][col]--;
+                }
+            }
+        }
+    }
+}
