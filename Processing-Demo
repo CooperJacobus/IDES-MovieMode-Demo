@@ -28,7 +28,7 @@ void draw(){
     }
   }
   
-  //Random Mode
+  //Manual Mode
   if(manualMode == true){
     //control variables with keys
     if(go == false && keyPressed){
