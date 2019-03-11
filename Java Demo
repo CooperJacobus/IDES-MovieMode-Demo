@@ -27,7 +27,7 @@ class Demo {
                 else grid[rowIndex][colIndex]++; //add to grid value
                 totalExposure++; //add to counter
                 eTime--; //subtract from remaining exposure time
-                //wait 50 miliseconds for legibility
+                //wait 50 milliseconds for legibility
 
                 //draw step in Piano Roll
                 }
@@ -35,7 +35,7 @@ class Demo {
             //stop run when time expires
             if(eTime <= 0){
                 go = false;
-                //wait 100 miliseconds
+                //wait 100 milliseconds
             }
 
         }
@@ -54,7 +54,7 @@ class Demo {
                     else grid[rowIndex][colIndex]++; //add to grid value
                     totalExposure++; //add to counter
                     eTime--; //subtract from remaining exposure time
-                    //wait 50 miliseconds
+                    //wait 50 milliseconds
                 }
             }
         }
