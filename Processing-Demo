@@ -1,0 +1,139 @@
+boolean manualMode = true; //exposure mode: true for manual, false for random
+boolean fade = false; //phosphorus fade: reduces grid values over time if true
+boolean go = false; //toggels exposures, controled by ENTER
+
+int dimension = 4; //dimension of grid
+int maxExposure = 256; //maximum exposures
+int totalExposure = 0; //counter for exposures
+int[][] grid = new int[dimension][dimension]; //2D array of int values representing total exposure of each panel
+int rowIndex = 0; //row index of currently exposed panel
+int colIndex = 0; //column index of currently exposed panel
+int eTime = 0; //countdown of remaining exposure;
+int exposureTime = 0; //represenents how long panel is to be exposed for
+
+void setup(){
+  background(255);
+  size(800,800);
+}
+
+void draw(){
+  noStroke();
+  fill(255);
+  rect(0,0,800,420);
+  
+  //run if ENTER pressed
+  if (keyPressed) {
+    if (key == ENTER) {
+      go = (go == true) ? false : true;
+    }
+  }
+  
+  //Random Mode
+  if(manualMode == true){
+    //control variables with keys
+    if(go == false && keyPressed){
+      if (key == 'w' || key == 'W') {
+       colIndex = (colIndex == 0) ? 0 : colIndex-1;
+      }
+      if (key == 's' || key == 'S') {
+       colIndex = (colIndex >= dimension-1) ? dimension-1: colIndex+1;
+      }
+      if (key == 'a' || key == 'A') {
+       rowIndex = (rowIndex == 0) ? 0 : rowIndex-1;
+      }
+      if (key == 'd' || key == 'D') {
+       rowIndex = (rowIndex >= dimension-1) ? dimension-1: rowIndex+1;
+      }
+      if (key == 'q') {
+       exposureTime ++;
+      }
+      if (key == 'e') {
+       exposureTime --;
+      }
+      if (key == ENTER) {
+       go = true;
+      }
+      eTime = exposureTime;
+      delay(50);
+      
+    }
+    if(go == true){
+      //expose panel 
+      if(fade == true) grid[rowIndex][colIndex]+=5; //increase values for legibility if fade is on
+      else grid[rowIndex][colIndex]++; //add to grid value 
+      totalExposure++; //add to counter
+      eTime--; //subtract from remaining exposure time
+      delay(50); //wait for legibility
+      
+      //draw step in Piano Roll
+      fill(0,200,120);
+      rect(50+(760/maxExposure*totalExposure),450+(int)((300/Math.pow(dimension,2))*(dimension*rowIndex+colIndex)),(int)(760/maxExposure),(int)(300/Math.pow(dimension,2)));
+    }
+      
+    //stop run when time expires
+    if(eTime <= 0){
+      go = false;
+      delay(100);
+    }
+    
+  }
+  
+  //Random Mode
+  if(manualMode == false && go == true){
+    if(totalExposure < maxExposure){
+      if(eTime <= 0){
+        //randomly generate panel index and exposure time
+        rowIndex = (int) (Math.random()*dimension);
+        colIndex = (int) (Math.random()*dimension);
+        eTime = (int) (Math.random()*6)+2;
+        exposureTime = eTime;
+      }
+      else{
+        if(fade == true) grid[rowIndex][colIndex]+=5; //adjust for fade for legibility
+        else grid[rowIndex][colIndex]++; //add to grid value
+        totalExposure++; //add to counter
+        eTime--; //subtract from remaining exposure time
+        delay(50); //wait for legibility
+      
+        //draw step in Piano Roll
+        fill(0,200,120);
+        rect(50+(760/maxExposure*totalExposure),450+(int)((300/Math.pow(dimension,2))*(dimension*rowIndex+colIndex)),(int)(760/maxExposure),(int)(300/Math.pow(dimension,2)));
+      }
+    }
+  }
+  
+  noFill();
+  strokeWeight(1);
+  stroke(0);
+  rect(45,445,(int)(760/maxExposure)*maxExposure+10,310);
+  
+  strokeWeight(2);
+  rect(10+(rowIndex*(400/dimension))-3,10+(colIndex*(400/dimension))-3,(400/dimension)+1,(400/dimension)+1);
+  //rect(45,450+(int)((300/Math.pow(dimension,2))*(dimension*rowIndex+colIndex)),(int)(760/maxExposure)*maxExposure+10,(int)(300/Math.pow(dimension,2)));
+  
+  
+  fill(0);
+  textSize(20);
+  text("Row Index: " + rowIndex,420,30);
+  text("Col Index: " + colIndex,420,60);
+  text("Exposure Time: " + exposureTime,420,90);
+  
+  //draw panels in grid colored based on values in grid
+  for(int row = 0; row < grid.length; row++){
+    for(int col = 0; col < grid[row].length; col++){
+      strokeWeight(1);
+      fill(0,grid[row][col]*10,grid[row][col]*6);
+      rect(10+(row*(400/dimension)),10+(col*(400/dimension)),(400/dimension)-5,(400/dimension)-5);
+    }
+  }
+  
+  //reduce values in grid over time
+  if(fade == true){
+    for(int row = 0; row < grid.length; row++){
+      for(int col = 0; col < grid[row].length; col++){
+        if(grid[row][col] > 0) grid[row][col]--;
+      }
+    }
+  }
+  
+}
