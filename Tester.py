@@ -31,7 +31,10 @@ while totalExposure < maxExposure:
         colIndex = int(random.random() * dimension)
         eTime = int(random.random() * 6) + 2
     else:
-        grid[rowIndex][colIndex] += 1  # add to grid value
+        if grid[rowIndex][colIndex] >= 255:
+            grid[rowIndex][colIndex] = 255  # set upper bound
+        else:
+            grid[rowIndex][colIndex] += 1   # add to grid value
         totalExposure += 1  # add to counter
         eTime -= 1  # subtract from remaining exposure time
 
