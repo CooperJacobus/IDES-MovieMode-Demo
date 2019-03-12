@@ -42,7 +42,7 @@ while totalExposure < maxExposure:
         for col in range(0, dimension):
             for x in range(0, matrix.width/dimension):
                 for y in range(0, matrix.height/dimension):
-                    matrix.SetPixel((matrix.width/dimension) * row + x, (matrix.height/dimension) * col + y, 0, grid[row][col] * 10, grid[row][col] * 6)
+                    matrix.SetPixel((matrix.width/dimension) * row + x, (matrix.height/dimension) * col + y, 0, grid[row][col] * 10, grid[row][col] * 4)
 
     time.sleep(0.050)
 
