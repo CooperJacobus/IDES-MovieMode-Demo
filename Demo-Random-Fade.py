@@ -17,6 +17,7 @@ options.pixel_mapper_config = 'U-mapper;Rotate:90'
 manualMode = False  # exposure mode: true for manual, false for random
 fade = True  # phosphorus fade: reduces grid values over time if true
 go = False  # toggels exposures, controlled by ENTER
+reset = False
 
 dimension = 4
 maxExposure = 256  # maximum exposures
@@ -28,8 +29,8 @@ eTime = 0  # countdown of remaining exposure;
 
 matrix = RGBMatrix(options=options)
 
-if manualMode == False:
-    while totalExposure < maxExposure*dimension | fade:
+if not manualMode:
+    while totalExposure < maxExposure*dimension:
         if eTime <= 0:
             # randomly generate panel index and exposure time
             rowIndex = int(random.random() * dimension)
@@ -52,10 +53,14 @@ if manualMode == False:
             for row in range(dimension):
                 for col in range(dimension):
                     if grid[row][col] > 0:
-                        grid[row][col] -= 1
+                        grid[row][col] -= 0.25
+
+        reset = True
 
         for row in range(0, dimension):
             for col in range(0, dimension):
+                if grid[row][col] <= 23:
+                    reset = False  # negate reset if any panels are underexposed
                 for x in range(0, matrix.width/dimension):
                     for y in range(0, matrix.height/dimension):
                         if fade:
@@ -63,9 +68,10 @@ if manualMode == False:
                         else:
                             matrix.SetPixel((matrix.width / dimension) * row + x, (matrix.height / dimension) * col + y, 0, grid[row][col] * 10, grid[row][col] * 2)
 
-        if not fade & totalExposure >= maxExposure*dimension/2:
-            for row in range(0,dimension):
-                for col in range(0,dimension):
+        if totalExposure >= maxExposure | reset:
+            totalExposure = 0
+            for row in range(0, dimension):
+                for col in range(0, dimension):
                     grid[row][col] = 0  # reset each grid value once sequence is complete
         time.sleep(0.050)
 
