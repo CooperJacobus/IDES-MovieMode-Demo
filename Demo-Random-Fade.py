@@ -39,6 +39,8 @@ if manualMode == False:
                 colIndex = int(random.random() * dimension)
             eTime = int(random.random() * 6) + 2
         else:
+            if fade:
+                grid[rowIndex][colIndex] += 4  # amplify if fade is on
             grid[rowIndex][colIndex] += 1  # add to grid value
             totalExposure += 1  # add to counter
             eTime -= 1  # subtract from remaining exposure time
