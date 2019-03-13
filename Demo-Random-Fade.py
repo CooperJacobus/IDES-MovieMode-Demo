@@ -29,7 +29,7 @@ eTime = 0  # countdown of remaining exposure;
 matrix = RGBMatrix(options=options)
 
 if manualMode == False:
-    while totalExposure < maxExposure*dimension:
+    while totalExposure < maxExposure*dimension | fade:
         if eTime <= 0:
             # randomly generate panel index and exposure time
             rowIndex = int(random.random() * dimension)
@@ -40,8 +40,6 @@ if manualMode == False:
             eTime = int(random.random() * 6) + 2
         else:
             grid[rowIndex][colIndex] += 1  # add to grid value
-            if fade:
-                grid[rowIndex][colIndex] += 4
             totalExposure += 1  # add to counter
             eTime -= 1  # subtract from remaining exposure time
 
@@ -59,15 +57,14 @@ if manualMode == False:
                 for x in range(0, matrix.width/dimension):
                     for y in range(0, matrix.height/dimension):
                         if fade:
-                            matrix.SetPixel((matrix.width/dimension) * row + x, (matrix.height/dimension) * col + y, 0, grid[row][col] * 30, grid[row][col] * 6)
+                            matrix.SetPixel((matrix.width/dimension) * row + x, (matrix.height/dimension) * col + y, 0, grid[row][col] * 10, grid[row][col] * 2)
                         else:
                             matrix.SetPixel((matrix.width / dimension) * row + x, (matrix.height / dimension) * col + y, 0, grid[row][col] * 10, grid[row][col] * 2)
 
-        if totalExposure >= maxExposure*dimension/2:
+        if not fade & totalExposure >= maxExposure*dimension/2:
             for row in range(0,dimension):
                 for col in range(0,dimension):
                     grid[row][col] = 0  # reset each grid value once sequence is complete
-
         time.sleep(0.050)
 
 try:
