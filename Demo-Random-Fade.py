@@ -14,8 +14,8 @@ options.parallel = 1
 options.hardware_mapping = 'adafruit-hat-pwm'
 options.pixel_mapper_config = 'U-mapper;Rotate:90'
 
-manualMode = True  # exposure mode: true for manual, false for random
-fade = False  # phosphorus fade: reduces grid values over time if true
+manualMode = False  # exposure mode: true for manual, false for random
+fade = True  # phosphorus fade: reduces grid values over time if true
 go = False  # toggels exposures, controlled by ENTER
 
 dimension = 4
@@ -43,8 +43,10 @@ if manualMode == False:
                 grid[rowIndex][colIndex] = 25  # set upper bound
             else:
                 grid[rowIndex][colIndex] += 1   # add to grid value
-            totalExposure += 1  # add to counter
-            eTime -= 1  # subtract from remaining exposure time
+                if fade:
+                    grid[rowIndex][colIndex] += 4
+                totalExposure += 1  # add to counter
+                eTime -= 1  # subtract from remaining exposure time
 
         if fade:
             for row in range(dimension):
@@ -56,7 +58,10 @@ if manualMode == False:
             for col in range(0, dimension):
                 for x in range(0, matrix.width/dimension):
                     for y in range(0, matrix.height/dimension):
-                        matrix.SetPixel((matrix.width/dimension) * row + x, (matrix.height/dimension) * col + y, 0, grid[row][col] * 10, grid[row][col] * 6)
+                        if fade:
+                            matrix.SetPixel((matrix.width/dimension) * row + x, (matrix.height/dimension) * col + y, 0, grid[row][col] * 30, grid[row][col] * 6)
+                        else:
+                            matrix.SetPixel((matrix.width / dimension) * row + x, (matrix.height / dimension) * col + y, 0, grid[row][col] * 10, grid[row][col] * 2)
 
         if totalExposure >= maxExposure*dimension/2:
             for row in range(0,dimension):
