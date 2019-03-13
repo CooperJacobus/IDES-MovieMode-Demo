@@ -39,14 +39,14 @@ if manualMode == False:
                 colIndex = int(random.random() * dimension)
             eTime = int(random.random() * 6) + 2
         else:
+            grid[rowIndex][colIndex] += 1  # add to grid value
+            if fade:
+                grid[rowIndex][colIndex] += 4
+            totalExposure += 1  # add to counter
+            eTime -= 1  # subtract from remaining exposure time
+
             if grid[rowIndex][colIndex] >= 25:
                 grid[rowIndex][colIndex] = 25  # set upper bound
-            else:
-                grid[rowIndex][colIndex] += 1   # add to grid value
-                if fade:
-                    grid[rowIndex][colIndex] += 4
-                totalExposure += 1  # add to counter
-                eTime -= 1  # subtract from remaining exposure time
 
         if fade:
             for row in range(dimension):
