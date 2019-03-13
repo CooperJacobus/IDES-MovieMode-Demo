@@ -24,7 +24,7 @@ eTime = 0  # countdown of remaining exposure;
 
 matrix = RGBMatrix(options = options)
 
-while totalExposure < maxExposure:
+while totalExposure < maxExposure*dimension:
     if eTime <= 0:
         # randomly generate panel index and exposure time
         rowIndex = int(random.random() * dimension)
@@ -47,7 +47,7 @@ while totalExposure < maxExposure:
                 for y in range(0, matrix.height/dimension):
                     matrix.SetPixel((matrix.width/dimension) * row + x, (matrix.height/dimension) * col + y, 0, grid[row][col] * 10, grid[row][col] * 6)
 
-    if totalExposure >= maxExposure:
+    if totalExposure >= maxExposure*dimension/2:
         for row in range(0,dimension):
             for col in range(0,dimension):
                 grid[row][col] = 0  # reset each grid value once sequence is complete
