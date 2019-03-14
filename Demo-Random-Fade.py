@@ -73,7 +73,7 @@ if not manualMode:
             for row in range(0, dimension):
                 for col in range(0, dimension):
                     grid[row][col] = 0  # reset each grid value once sequence is complete
-        time.sleep(0.050)
+        # time.sleep(0.050)
 
 try:
     print("Press CTRL-C to stop.")
