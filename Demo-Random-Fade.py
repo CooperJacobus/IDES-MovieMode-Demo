@@ -78,7 +78,7 @@ if not manualMode:
 try:
     print("Press CTRL-C to stop.")
     while True:
-        time.sleep(100)
+        time.sleep(100)  # Infinite Wait
 except KeyboardInterrupt:
     sys.exit(0)
 
